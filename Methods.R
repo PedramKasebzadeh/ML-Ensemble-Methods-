@@ -18,16 +18,17 @@ test <- spam[-id,]
 ntrees <- seq(10,100,by=10)
 output <- data.frame(number_of_trees = 0, Error = 0)
 row <- 1
-
+# a loop to get the result for difrent number of trees 
 for(i in ntrees){
   RF <- randomForest(formula=Spam ~.,data=train,ntree= i)
   yhat <- predict(RF,newdata=test)
+  # confusion matrix
   cm <- table(test$Spam, yhat)
   Error <- (cm[2,1]+cm[1,2])/sum(cm)
   output[row,] <- c(i,Error)
   row <- row + 1
 }
-
+# PLOTing the results 
 ggplot() +
   geom_line(data = output, mapping = aes(x = number_of_trees
                                          , y = Error)
